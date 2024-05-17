@@ -1,4 +1,4 @@
-package com.ilivinskyi.homeworks.exceptions;
+package com.ilivinskyi.homeworks.exceptions.strings;
 
 public class WordsDivider {
 

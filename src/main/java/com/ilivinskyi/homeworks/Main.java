@@ -1,12 +1,12 @@
 package com.ilivinskyi.homeworks;
 
-import static com.ilivinskyi.homeworks.exceptions.ElementsSearch.findElementIndex;
-import static com.ilivinskyi.homeworks.exceptions.WordsDivider.splitString;
+import static com.ilivinskyi.homeworks.exceptions.collections.ElementsSearch.findElementIndex;
+import static com.ilivinskyi.homeworks.exceptions.strings.WordsDivider.splitString;
 
-import com.ilivinskyi.homeworks.exceptions.EmptyStringException;
-import com.ilivinskyi.homeworks.exceptions.SafeDivision;
-import com.ilivinskyi.homeworks.exceptions.SafeFileReader;
-import com.ilivinskyi.homeworks.exceptions.SquareRootCalculator;
+import com.ilivinskyi.homeworks.exceptions.files.SafeFileReader;
+import com.ilivinskyi.homeworks.exceptions.math.SafeDivision;
+import com.ilivinskyi.homeworks.exceptions.math.SquareRootCalculator;
+import com.ilivinskyi.homeworks.exceptions.strings.EmptyStringException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,7 +19,8 @@ public class Main {
         divider.division(0, 0);
 
         // 2
-        System.out.println(SafeFileReader.readFile("test.txt"));
+        SafeFileReader safeFileReader = new SafeFileReader();
+        System.out.println(safeFileReader.readFile("test.txt"));
 
         // 3
         String input = "";

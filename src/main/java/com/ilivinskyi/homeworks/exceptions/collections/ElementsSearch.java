@@ -1,4 +1,4 @@
-package com.ilivinskyi.homeworks.exceptions;
+package com.ilivinskyi.homeworks.exceptions.collections;
 
 import java.util.List;
 import java.util.NoSuchElementException;
