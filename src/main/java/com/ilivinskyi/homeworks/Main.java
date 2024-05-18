@@ -1,106 +1,56 @@
 package com.ilivinskyi.homeworks;
 
-import com.ilivinskyi.homeworks.reflection.User;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import static com.ilivinskyi.homeworks.exceptions.collections.ElementsSearch.findElementIndex;
+import static com.ilivinskyi.homeworks.exceptions.strings.WordsDivider.splitString;
+
+import com.ilivinskyi.homeworks.exceptions.files.SafeFileReader;
+import com.ilivinskyi.homeworks.exceptions.math.SafeDivision;
+import com.ilivinskyi.homeworks.exceptions.math.SquareRootCalculator;
+import com.ilivinskyi.homeworks.exceptions.strings.EmptyStringException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Main {
 
     public static void main(String[] args) {
-        // 1) Получение информации о классе:
-        var user = new User("Cat", 10);
-        var userClass = user.getClass();
-        System.out.println(userClass.getName());
-        System.out.println(userClass.getPackage());
-        System.out.println(userClass.getModifiers());
+        // 1
+        var divider = new SafeDivision();
+        divider.division(0, 0);
 
-        var fields = userClass.getDeclaredFields();
-        for (var field : fields) {
-            System.out.println(field.getName());
-            System.out.println(field.getType().getName());
-        }
-        try {
-            System.out.println(userClass.getDeclaredMethod("getAgeAfterYears", int.class));
-        } catch (NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        }
+        // 2
+        SafeFileReader safeFileReader = new SafeFileReader();
+        System.out.println(safeFileReader.readFile("test.txt"));
 
-        // 2) Создание объекта с использованием рефлексии:
-        Object object;
+        // 3
+        String input = "";
 
         try {
-            var newUser = getClassForName("com.ilivinskyi.homeworks.reflection.User");
-            try {
-                var constructor = getConstructor(newUser);
-                object = constructor.newInstance("Code", 5);
-                System.out.println(object.getClass().getName());
-            } catch (
-                InstantiationException | IllegalAccessException | InvocationTargetException e
-            ) {
-                throw new RuntimeException(e);
+            String[] words = splitString(input);
+            System.out.println("Words in string:");
+            for (String word : words) {
+                System.out.println(word);
             }
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+        } catch (EmptyStringException e) {
+            System.err.println("Error: " + e.getMessage());
         }
 
-        // 3) Вызов метода по имени:
-        invokeUserMethodByName(user, "sayHello", "Rokko");
+        // 4
+        List<String> list = new ArrayList<>();
+        list.add("one");
+        list.add("two");
+        list.add("three");
 
-        // 4) Анализ аннотаций:
-        printClassMethodAnnotations(user);
+        String target = "two";
 
-        // 5) Динамическая модификация класса:
-        changeUserAge(user, 50);
-    }
-
-    public static Class<?> getClassForName(String className) throws ClassNotFoundException {
-        return Class.forName(className);
-    }
-
-    public static Constructor getConstructor(Class<?> clazz) {
-        return clazz.getConstructors()[0];
-    }
-
-    public static void invokeUserMethodByName(
-        Object object,
-        String methodName,
-        String strangerName
-    ) throws RuntimeException {
         try {
-            Method method = object.getClass().getDeclaredMethod(methodName, String.class);
-            Class<?>[] parameterTypes = method.getParameterTypes();
-            Object[] arguments = new Object[parameterTypes.length];
-            arguments[0] = strangerName;
-            method.invoke(object, arguments);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            throw new RuntimeException(ex);
+            int index = findElementIndex(list, target);
+            System.out.println("Element position: " + index);
+        } catch (NoSuchElementException e) {
+            System.err.println("Error: " + e.getMessage());
         }
-    }
 
-    public static void printClassMethodAnnotations(User user) {
-        Method[] methods = user.getClass().getDeclaredMethods();
-        for (Method method : methods) {
-            Annotation[] annotations = method.getDeclaredAnnotations();
-            for (Annotation annotation : annotations) {
-                System.out.println(annotation.annotationType().getName());
-            }
-        }
-    }
-
-    public static void changeUserAge(User user, int value) {
-        try {
-            System.out.println("Age before change: ");
-            user.printAge();
-            Field field = User.class.getDeclaredField("age");
-            field.setAccessible(true);
-            field.setInt(user, 30);
-            System.out.println("Age after change:");
-            user.printAge();
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        // 5
+        SquareRootCalculator.calculateSquareRoot(-4.0);
     }
 }
